@@ -1,0 +1,28 @@
+<div class="form-container">
+  <form [formGroup]="justificationForm" (ngSubmit)="submitJustification()" enctype="multipart/form-data">
+    <div class="row">
+      <h2 class="form--title">
+        Justificación de {{ selectedDate | date: 'dd/MM/yyyy' }}
+      </h2>
+    </div>
+
+    <div class="row">
+      <div class="input-field">
+        <label for="observation">Observación</label>
+        <textarea id="observation" rows="4" formControlName="justificationObservation"></textarea>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="input-field">
+        <label for="file">Archivo Adjunto</label>
+        <input type="file" id="file" (change)="onFileSelected($event)" />
+      </div>
+    </div>
+
+    <div class="form--actions">
+      <button type="button" (click)="cancel()">Cancelar</button>
+      <button type="submit" [disabled]="!justificationForm.valid || !selectedFile">Guardar</button>
+    </div>
+  </form>
+</div>

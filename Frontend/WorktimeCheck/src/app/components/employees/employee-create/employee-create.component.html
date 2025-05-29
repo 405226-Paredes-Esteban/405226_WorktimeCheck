@@ -1,0 +1,113 @@
+<div class="form-container">
+  <form [formGroup]="employeeForm">
+    <div class="row">
+      <h2 class="form--title">
+        {{ auxOperation ? "Actualización de Empleado" : "Carga de Empleado" }}
+      </h2>
+    </div>
+
+    <div class="row">
+      <div class="input-field">
+        <label for="firstName">Nombre</label>
+        <input type="text" id="firstName" formControlName="firstName" />
+      </div>
+
+      <div class="input-field">
+        <label for="lastName">Apellido</label>
+        <input type="text" id="lastName" formControlName="lastName" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="input-field">
+        <label for="document">Documento</label>
+        <input
+          type="text"
+          id="document"
+          formControlName="document"
+          [disabled]="auxOperation"
+        />
+      </div>
+
+      <div class="input-field">
+        <label for="area">Área</label>
+        <select id="area" formControlName="area">
+          @for (area of areas; track $index) {
+            <option value="{{area.id}}">{{area.description}}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>Horarios</h3>
+
+      <div class="days">
+        <div
+          *ngFor="let day of ['L', 'M', 'X', 'J', 'V', 'S', 'D']"
+          class="day"
+          [class.active]="daySelection[day]"
+          (click)="toggleDay(day)"
+        >
+          {{ day }}
+        </div>
+      </div>
+
+      <div class="checkbox-group">
+        <input
+          type="checkbox"
+          id="horarios-diferentes"
+          formControlName="distinctSchedules"
+          (change)="onScheduleModeChange()"
+          ngModel=""
+        />
+        <label for="horarios-diferentes">Distintos horarios por día</label>
+      </div>
+
+      <!-- Horario general -->
+      <div
+        class="time-inputs"
+        *ngIf="!employeeForm.get('distinctSchedules')?.value"
+      >
+        <div class="time-input">
+          <label for="entryTime">Desde</label>
+          <input type="time" id="entryTime" formControlName="entryTime" />
+        </div>
+
+        <div class="time-input">
+          <label for="exitTime">Hasta</label>
+          <input type="time" id="exitTime" formControlName="exitTime" />
+        </div>
+      </div>
+
+      <!-- Horarios distintos por día -->
+      <div
+        class="day-schedules"
+        *ngIf="employeeForm.get('distinctSchedules')?.value"
+      >
+        <ng-container formArrayName="daySchedules">
+          <div
+            *ngFor="let control of daySchedules.controls; let i = index"
+            [formGroupName]="i"
+            class="day-schedule-row"
+          >
+            <label>{{ control.get("day")?.value }}</label>
+            <div class="time-inputs">
+              <div class="time-input">
+                <input type="time" formControlName="entryTime" />
+              </div>
+              <div class="time-input">
+                <input type="time" formControlName="exitTime" />
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="form--actions">
+      <button type="button" (click)="returnList()">Cancelar</button>
+      <button type="button" (click)="saveEmployee()">Guardar</button>
+    </div>
+  </form>
+</div>

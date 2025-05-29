@@ -1,0 +1,80 @@
+.container{
+  display: flex;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.sidebar{
+  display: flex;
+  flex-direction: column;
+  background-color: #D84747;
+  height: 56.5rem;
+  width: 12rem; 
+}
+
+.sidebar--image{
+  padding: 0.4rem;
+  max-width: 12rem;
+  max-height: 12rem;
+}
+
+.sidebar--options{
+  padding: 1rem;
+  margin: 1rem;
+}
+
+.sidebar--options--option {
+  background-color: lightgray;
+  border-radius: 10rem;
+  margin-top: 2rem;
+  padding: 0.5rem 1rem;
+  width: 5.8rem;
+  height: 3rem;
+  display: flex;
+  flex-direction: column; /* CHANGED from column */
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem; /* space between icon and text */
+}
+
+
+.sidebar--options--option--image{
+  width: 2rem;
+}
+
+.navbar {
+  background-color: #D84747;
+  height: 5rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+.navbar--options{
+  display: flex;
+  flex-direction: row;
+}
+
+.navbar--option{
+  padding-left: 1rem;
+  padding-right: 0.5rem;
+}
+
+
+.app-root {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background-color: white;
+}

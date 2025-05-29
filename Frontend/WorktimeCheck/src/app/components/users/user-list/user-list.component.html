@@ -1,0 +1,78 @@
+<div class="list--container">
+  <div class="list--header">
+    <h2>Lista de Usuarios</h2>
+  </div>
+  <div class="list--body">
+    <div class="list--filters">
+      <input
+        type="text"
+        placeholder="Buscar por nombre"
+        [(ngModel)]="nameFilter"
+        (input)="fetchUsers()"
+      />
+    </div>
+    <div class="list--actions"></div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Rol</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (u of userList; track $index) {
+        <tr>
+          <td>{{ u.userName }}</td>
+          <td>{{ u.email }}</td>
+          <td>{{ u.userRole }}</td>
+          @if (u.userState==0) {
+          <td>Anulado</td>
+          } @else if (u.userState==1) {
+          <td>Habilitado</td>
+          }
+          <td>
+            <button class="delete--button" (click)="deleteUser(u.email)">
+              🗑️
+            </button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  <div class="list--pagination">
+    <div class="pagination-left">
+      <label for="size-select">Cantidad:</label>
+      <select id="size-select" [(ngModel)]="size" (change)="fetchUsers()">
+        <option [value]="5">5</option>
+        <option [value]="10">10</option>
+        <option [value]="20">20</option>
+      </select>
+    </div>
+    <div class="pagination-right">
+      <button (click)="previousPage()" [disabled]="page === 0">«</button>
+      <ng-container *ngFor="let p of totalPagesArray; let i = index">
+        <button (click)="goToPage(i)" [class.active]="page === i">
+          {{ i + 1 }}
+        </button>
+      </ng-container>
+      <button (click)="nextPage()" [disabled]="page >= totalPages - 1">
+        »
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación -->
+<div class="modal-overlay" *ngIf="showConfirmModal">
+  <div class="modal-content">
+    <h3>¿Está seguro de querer eliminar el usuario seleccionado?</h3>
+    <div class="modal-buttons">
+      <button (click)="confirmDelete()">Sí, Eliminar</button>
+      <button (click)="cancelDelete()">Cancelar</button>
+    </div>
+  </div>
+</div>

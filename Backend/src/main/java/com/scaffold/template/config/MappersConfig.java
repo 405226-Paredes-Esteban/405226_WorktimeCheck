@@ -10,7 +10,7 @@ import org.modelmapper.ModelMapper;
 @Configuration
 public class MappersConfig {
     @Bean
-    public ModelMapper moddelMapper(){
+    public ModelMapper modelMapper(){
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper;
     }

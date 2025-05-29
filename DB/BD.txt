@@ -1,0 +1,115 @@
+CREATE DATABASE PS_2025
+GO
+USE PS_2025
+GO
+
+CREATE TABLE Areas
+(area_id int PRIMARY KEY AUTO_INCREMENT ,
+area_state int,
+area_auduser int,
+area_description varchar(100))
+
+CREATE TABLE Employees
+(employee_id int AUTO_INCREMENT PRIMARY KEY,
+employee_name varchar(75),
+employee_surname varchar(75),
+employee_document varchar(30),
+employee_state int,
+employee_auduser int,
+area_id int,
+CONSTRAINT FK_Employees_Areas FOREIGN KEY (area_id)
+REFERENCES Areas(area_id))
+
+CREATE TABLE Employee_Shifts
+(employee_id int,
+shift_day varchar(20),
+shift_entry time,
+shift_exit time,
+shift_duration int,
+shift_state int,
+shift_auduser int,
+CONSTRAINT PK_Employee_Shifts PRIMARY KEY (employee_id, shift_day),
+CONSTRAINT FK_Shifts_Employee FOREIGN KEY (employee_id)
+REFERENCES Employees(employee_id))
+
+CREATE TABLE Employee_Times
+(time_id int AUTO_INCREMENT PRIMARY KEY ,
+employee_id int,
+time_day datetime,
+time_type char,
+time_ontime bool,
+time_state int,
+time_auduser int,
+CONSTRAINT FK_Times_Employee FOREIGN KEY (employee_id)
+REFERENCES Employees(employee_id))
+
+CREATE TABLE Time_Justifications
+(justification_id int AUTO_INCREMENT PRIMARY KEY,
+time_id int,
+justification_observation varchar(200),
+justification_url varchar(200),
+justification_state int,
+justification_auduser int,
+CONSTRAINT FK_Justifications_Time FOREIGN KEY (time_id)
+REFERENCES Employee_Times(time_id))
+
+CREATE TABLE Justification_Checks
+(check_id int AUTO_INCREMENT PRIMARY KEY,
+justification_id int,
+check_approval bool,
+check_reason varchar(200),
+check_state int,
+check_auduser int,
+CONSTRAINT FK_Checks_Justification FOREIGN KEY (justification_id)
+REFERENCES Time_Justifications(justification_id))
+
+CREATE TABLE Notifications
+(notification_id int AUTO_INCREMENT PRIMARY KEY,
+notification_sender varchar(100),
+notification_receiver varchar(100),
+notification_subject varchar(100),
+notification_sentstatus bool,
+notification_auduser int)
+
+
+CREATE TABLE Users
+(user_id int AUTO_INCREMENT PRIMARY KEY,
+user_email varchar(255),
+user_password varchar(255),
+user_state int,
+user_auduser int)
+
+CREATE TABLE Roles
+(role_id int PRIMARY KEY,
+role_description varchar(100),
+role_state int,
+role_auduser int)
+
+CREATE TABLE Menu_Options
+(option_id int PRIMARY KEY,
+option_description varchar(100),
+option_link varchar(100),
+option_state int,
+option_auduser int)
+
+CREATE TABLE Users_Roles
+(user_id int,
+role_id int,
+users_roles_state int,
+users_roles_auduser int,
+CONSTRAINT PK_Users_Roles PRIMARY KEY (user_id, role_id),
+CONSTRAINT FK_UR_Users FOREIGN KEY (user_id)
+	REFERENCES Users(user_id),
+CONSTRAINT FK_UR_Roles FOREIGN KEY (role_id)
+	REFERENCES Roles(role_id))
+    
+CREATE TABLE Roles_Options
+(role_id int,
+option_id int,
+roles_options_state int,
+roles_options_auduser int,
+CONSTRAINT PK_Roles_Options PRIMARY KEY (option_id, role_id),
+CONSTRAINT FK_RO_Options FOREIGN KEY (option_id)
+	REFERENCES Menu_Options(option_id),
+CONSTRAINT FK_RO_Roles FOREIGN KEY (role_id)
+	REFERENCES Roles(role_id))
